@@ -1,10 +1,11 @@
 import arc.*;
 
 public class marcustoolsCPT{
-	public static void deck(Console con){
+	public static int[][] shuffleDeck() {
+        // Creates the deck and shuffles the cards
 		// Create the int array
 		int intDeck[][];
-		
+			
 		// Create the parameters for the int array
 		intDeck = new int[52][3];
 		
@@ -52,9 +53,6 @@ public class marcustoolsCPT{
 			}
 		}
 		
-		// Test Print
-		// for(intRow = 0; intRow < 52; intRow++){
-			// con.println(intDeck[intRow][0] + " | " + intDeck[intRow][1] + " | " + intDeck[intRow][2]);
-		// }
+		return intDeck;
 	}
 }
