@@ -37,7 +37,7 @@ public class CPTMarcus{
 		con.drawImage(imgBlackjackTitle,0,0);
 		con.println("Welcome to Blackjack!");
 		con.println("Would you like to play (p),");
-		con.println("View High Scores (s),");
+		con.println("View High Scores (v),");
 		con.println("Help (h),");
 		con.println("or Quit (q)");
 		con.print("What would you want to do: ");
@@ -68,11 +68,31 @@ public class CPTMarcus{
 						con.println("PLAYER CARDS");
 						intPlayer[0][0] = intDeck[0][0];
 						intPlayer[0][1] = intDeck[0][1];
-						con.println(intPlayer[0][0] + " | " + intPlayer[0][1]);
+						if(intPlayer[0][0] == 1){
+							con.println("A + " + intPlayer[0][1]);
+						}else if(intPlayer[0][0] < 11){
+							con.println(intPlayer[0][0] + " | " + intPlayer[0][1]);
+						}else if(intPlayer[0][0] == 11){
+							con.println("J | " + intPlayer[0][1]);
+						}else if(intPlayer[0][0] == 12){
+							con.println("Q | " + intPlayer[0][1]);
+						}else{
+							con.println("K | " + intPlayer[0][1]);
+						}
 						intDeck[0][0] = -1;
 						intPlayer[1][0] = intDeck[1][0];
 						intPlayer[1][1] = intDeck[1][1];
-						con.println(intPlayer[1][0] + " | " + intPlayer[1][1]);
+						if(intPlayer[1][0] == 1){
+							con.println("A | " + intPlayer[1][1]);
+						}else if(intPlayer[1][0] < 11){
+							con.println(intPlayer[1][0] + " | " + intPlayer[1][1]);
+						}else if(intPlayer[1][0] == 11){
+							con.println("J | " + intPlayer[1][1]);
+						}else if(intPlayer[1][0] == 12){
+							con.println("Q | " + intPlayer[1][1]);
+						}else{
+							con.println("K | " + intPlayer[1][1]);
+						}
 						intDeck[1][0] = -1;
 						con.println("");
 						con.println("");
@@ -102,10 +122,20 @@ public class CPTMarcus{
 						con.println("DEALER CARDS");
 						intDealer[0][0] = intDeck[2][0];
 						intDealer[0][1] = intDeck[2][1];
-						con.println(intDealer[0][0] + " | " + intDealer[0][1]);
+						if(intDealer[0][0] == 1){
+							con.println("A | " + intDealer[0][1]);
+						}else if(intDealer[0][0] < 11){
+							con.println(intDealer[0][0] + " | " + intDealer[0][1]);
+						}else if(intDealer[0][0] == 11){
+							con.println("J | " + intDealer[0][1]);
+						}else if(intDealer[0][0] == 12){
+							con.println("Q | " + intDealer[0][1]);
+						}else{
+							con.println("K | " + intDealer[0][1]);
+						}
 						intDeck[2][0] = -1;
 					}
-					if(intPlayerValue != 21){
+					if(intPlayerValue < 21){
 						con.print("Do you want to \"hit\" or \"stand\"?: ");
 						strOption = con.readLine();
 						if(strOption.equalsIgnoreCase("hit") || strOption.equalsIgnoreCase("h")){
@@ -117,7 +147,7 @@ public class CPTMarcus{
 							// Add the new card to the player's hand
 							intPlayer[intPlayerCount][0] = intDeck[intDeckCount][0];
 							intPlayer[intPlayerCount][1] = intDeck[intDeckCount][1];
-							con.println("TEST PLAYER: " + intPlayer[intPlayerCount][0] + " | " + intPlayer[intPlayerCount][1]);
+							// con.println("TEST PLAYER: " + intPlayer[intPlayerCount][0] + " | " + intPlayer[intPlayerCount][1]);
 							intDeck[intDeckCount][0] = -1;
 							intPlayerCount = intPlayerCount + 1;
 							
@@ -127,7 +157,17 @@ public class CPTMarcus{
 							
 							// Print all the player cards and the finds the value of the cards
 							for(intCount = 0; intCount < intPlayerCount; intCount++){
-								con.println(intPlayer[intCount][0] + " | " + intPlayer[intCount][1]);
+								if(intPlayer[intCount][0] == 1){
+									con.println("A | " + intPlayer[intCount][1]);
+								}else if(intPlayer[intCount][0] < 11){
+									con.println(intPlayer[intCount][0] + " | " + intPlayer[intCount][1]);
+								}else if(intPlayer[intCount][0] == 11){
+									con.println("J | " + intPlayer[intCount][1]);
+								}else if(intPlayer[intCount][0] == 12){
+									con.println("Q | " + intPlayer[intCount][1]);
+								}else{
+									con.println("K | " + intPlayer[intCount][1]);
+								}
 								// Face Card Logic
 								if(intPlayer[intCount][0] == 11 || intPlayer[intCount][0] == 12 || intPlayer[intCount][0] == 13){
 									intPlayerValue = intPlayerValue + 10;
@@ -156,19 +196,25 @@ public class CPTMarcus{
 							// Continuously print the dealer's card
 							con.println("DEALER CARDS");
 							for(intCount = 0; intCount < intDealerCount; intCount++){
-								con.println(intDealer[intCount][0] + " | " + intDealer[intCount][1]);
+								if(intDealer[intCount][0] == 1){
+									con.println("A | " + intDealer[intCount][1]);
+								}else if(intDealer[intCount][0] < 11){
+									con.println(intDealer[intCount][0] + " | " + intDealer[intCount][1]);
+								}else if(intDealer[intCount][0] == 11){
+									con.println("J | " + intDealer[intCount][1]);
+								}else if(intDealer[intCount][0] == 12){
+									con.println("Q | " + intDealer[intCount][1]);
+								}else{
+									con.println("K | " + intDealer[intCount][1]);
+								}
 							}
 							
 							if(intPlayerValue == 21){
 								con.println("Nice 21!");
-								blnBroken = true;
 								strOption = "stand";
-								break;
 							}else if(intPlayerValue > 21){
 								con.println("YOU BUSTED!");
-								blnBroken = true;
 								strOption = "stand";
-								break;
 							}else{
 								continue;
 							}
@@ -192,21 +238,42 @@ public class CPTMarcus{
 								
 								con.println("PLAYER CARDS");
 								for(intCount = 0; intCount < intPlayerCount; intCount++){
-									con.println(intPlayer[intCount][0] + " | " + intPlayer[intCount][1]);
+									if(intDealer[intCount][0] == 1){
+										con.println("A | " + intDealer[intCount][1]);
+									}else if(intPlayer[intCount][0] < 11){
+										con.println(intPlayer[intCount][0] + " | " + intPlayer[intCount][1]);
+									}else if(intPlayer[intCount][0] == 11){
+										con.println("J | " + intPlayer[intCount][1]);
+									}else if(intPlayer[intCount][0] == 12){
+										con.println("Q | " + intPlayer[intCount][1]);
+									}else{
+										con.println("K | " + intPlayer[intCount][1]);
+									}
 								}
 								
 								con.println("-------");
+								con.println("DEALER CARDS");
+								intAceCount = 0;
 								
 								for(intCount = 0; intCount < intDealerCount; intCount++){
-									con.println(intDealer[intCount][0] + " | " + intDealer[intCount][1]);
+									if(intDealer[intCount][0] == 1){
+										con.println("A | " + intDealer[intCount][1]);
+									}else if(intDealer[intCount][0] < 11){
+										con.println(intDealer[intCount][0] + " | " + intDealer[intCount][1]);
+									}else if(intDealer[intCount][0] == 11){
+										con.println("J | " + intDealer[intCount][1]);
+									}else if(intDealer[intCount][0] == 12){
+										con.println("Q | " + intDealer[intCount][1]);
+									}else{
+										con.println("K | " + intDealer[intCount][1]);
+									}
 									// Face Card Logic
 									if(intDealer[intCount][0] == 11 || intDealer[intCount][0] == 12 || intDealer[intCount][0] == 13){
 										intDealerValue = intDealerValue + 10;
 									// Ace Card Logic
-									}else if(intDealer[intCount][0] == 1 && (intDealerValue + 11) > 21){
-										intDealerValue = intDealerValue + 1;
-									}else if(intDealer[intCount][0] == 1 && (intDealerValue + 11) <= 21){
+									}else if(intDealer[intCount][0] == 1){
 										intDealerValue = intDealerValue + 11;
+										intAceCount = intAceCount + 1;
 									// Other Cards Logic
 									}else{
 										intDealerValue = intDealerValue + intDealer[intCount][0];
