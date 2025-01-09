@@ -7,12 +7,13 @@ public class CPTMarcus{
 		Console con = new Console("Blackjack",1280,720);
 		BufferedImage imgBlackjackTitle = con.loadImage("blackjack.jpg");
 		
+		// ♦, ♣, ♥, ♠
 		// Create the variables
 		char chrChoice = '$';
 		String strOption = "Y";
 		String strName;
 		int intMoney = 1000;
-		int intBet;
+		int intBet = 0;
 		String strOutcome = "";
 		
 		// Create the arrays
@@ -22,6 +23,12 @@ public class CPTMarcus{
 		intPlayer = new int[5][2];
 		int intDealer[][];
 		intDealer = new int[5][2];
+		String strSuits[];
+		strSuits = new String[4];
+		strSuits[0] = "♦";
+		strSuits[1] = "♣";
+		strSuits[2] = "♥";
+		strSuits[3] = "♠";
 		
 		// Create even more variables
 		int intPlayerValue = 0;
@@ -34,6 +41,7 @@ public class CPTMarcus{
 		boolean blnStood = false;
 		boolean blnStandPrint = true;
 		boolean blnMainMenu = true;
+		boolean blnDoubled = false;
 		
 		while(blnMainMenu == true){
 			// Main Menu
@@ -45,8 +53,10 @@ public class CPTMarcus{
 			con.println("or Quit (q)");
 			con.print("What would you want to do: ");
 			chrChoice = con.readChar();
-		
+			
+			// If user wants to play, ask for their name
 			if(chrChoice == 'p'){
+				con.clear();
 				con.print("What is your name?: ");
 				strName = con.readLine();
 			}
@@ -56,7 +66,6 @@ public class CPTMarcus{
 				// Checks if the choice is to play
 				if(chrChoice == 'p'){
 					blnMainMenu = false;
-					con.clear();
 					// Only happens if the user wants to play again or if chrChoice is P
 					if(!strOption.equalsIgnoreCase("hit") && !strOption.equalsIgnoreCase("h") && !strOption.equalsIgnoreCase("stand") && !strOption.equalsIgnoreCase("s") && strOption.equalsIgnoreCase("y")){
 						// Shuffles the deck
@@ -138,6 +147,7 @@ public class CPTMarcus{
 							while(intPlayerValue > 21 && intAceCount > 0){
 								intPlayerValue = intPlayerValue - 10;
 								intAceCount = intAceCount - 1;
+								System.out.println("Ace Decline Player");
 							}
 						}
 						
@@ -159,14 +169,101 @@ public class CPTMarcus{
 							}
 							intDeck[2][0] = -1;
 						}
+						if(intPlayerValue <= 11 && intPlayerValue >= 9 && intPlayer[2][0] == 0){
+							con.print("Do you want to double down?: ");
+							if(con.readLine().equalsIgnoreCase("y") || con.readLine().equalsIgnoreCase("yes")){
+								intBet = intBet * 2;
+								blnDoubled = true;
+								System.out.println("User doubled down");
+								strOption = "stand";
+							}
+							// Double down Code
+							while(blnDoubled == true){
+								
+								// Set the next card for the player
+								intPlayer[2][0] = intDeck[3][0];
+								intPlayer[2][1] = intDeck[3][1];
+								
+								// Increase the count, counting the amount of cards the player has
+								intPlayerCount = 3;
+								
+								// Reprint all the data
+								con.clear();
+								con.println("PLAYER CARDS");
+								// Print all the player cards and the finds the value of the cards
+								for(intCount = 0; intCount < intPlayerCount; intCount++){
+									if(intPlayer[intCount][0] == 1){
+										con.println("A | " + intPlayer[intCount][1]);
+									}else if(intPlayer[intCount][0] < 11){
+										con.println(intPlayer[intCount][0] + " | " + intPlayer[intCount][1]);
+									}else if(intPlayer[intCount][0] == 11){
+										con.println("J | " + intPlayer[intCount][1]);
+									}else if(intPlayer[intCount][0] == 12){
+										con.println("Q | " + intPlayer[intCount][1]);
+									}else{
+										con.println("K | " + intPlayer[intCount][1]);
+									}
+								}
+								
+								con.println("");
+								con.println("");
+								con.println("");
+								
+								// Reprint all the Dealer Data
+								con.println("DEALER CARDS");
+								if(intDealer[0][0] == 1){
+									con.println("A | " + intDealer[0][1]);
+								}else if(intDealer[0][0] < 11){
+									con.println(intDealer[0][0] + " | " + intDealer[0][1]);
+								}else if(intDealer[0][0] == 11){
+									con.println("J | " + intDealer[0][1]);
+								}else if(intDealer[0][0] == 12){
+									con.println("Q | " + intDealer[0][1]);
+								}else{
+									con.println("K | " + intDealer[0][1]);
+								}
+								
+								// Reset player value
+								intPlayerValue = 0;
+								intAceCount = 0;
+								
+								// Finds the value of the cards
+								for(intCount = 0; intCount < intPlayerCount; intCount++){
+									// Face Card Logic
+									if(intPlayer[intCount][0] == 11 || intPlayer[intCount][0] == 12 || intPlayer[intCount][0] == 13){
+										intPlayerValue = intPlayerValue + 10;
+									// Ace Card Logic
+									}else if(intPlayer[intCount][0] == 1){
+										intPlayerValue = intPlayerValue + 11;
+										intAceCount = intAceCount + 1;
+									// Other Cards Logic
+									}else{
+										intPlayerValue = intPlayerValue + intPlayer[intCount][0];
+									}
+								}
+								// Dynamic Ace Values
+								while(intPlayerValue > 21 && intAceCount > 0){
+									intPlayerValue = intPlayerValue - 10;
+									intAceCount = intAceCount - 1;
+									System.out.println("Ace Decline Player");
+								}
+								
+								// Set the new card as used
+								intDeck[3][0] = -1;
+								blnDoubled = false;
+								
+								// Test Print
+								con.println("DOUBLE DOWNER!!!!!!");
+							}
+						}
 						if(intPlayerValue < 21 || strOption.equalsIgnoreCase("stand") || strOption.equalsIgnoreCase("s")){
 							
 							// If user doesn't stand
-							if(!strOption.equalsIgnoreCase("stand") && !strOption.equalsIgnoreCase("s")){
+							if(!strOption.equalsIgnoreCase("stand") && !strOption.equalsIgnoreCase("s") && blnDoubled == false){
 								con.print("Do you want to \"hit\" or \"stand\"?: ");
 								strOption = con.readLine();
 							}
-							
+								
 							// If user hits
 							if(strOption.equalsIgnoreCase("hit") || strOption.equalsIgnoreCase("h")){
 								
@@ -187,6 +284,7 @@ public class CPTMarcus{
 								con.clear();
 								intPlayerValue = 0;
 								con.println("PLAYER CARDS");
+								intAceCount = 0;
 								
 								// Print all the player cards and the finds the value of the cards
 								for(intCount = 0; intCount < intPlayerCount; intCount++){
@@ -213,11 +311,15 @@ public class CPTMarcus{
 										intPlayerValue = intPlayerValue + intPlayer[intCount][0];
 									}
 								}
+								
+								// Dynamic Ace Values
 								while(intPlayerValue > 21 && intAceCount > 0){
 									intPlayerValue = intPlayerValue - 10;
 									intAceCount = intAceCount - 1;
+									System.out.println("Ace Decline Player");
 								}
 								
+								// Print out the final player value
 								if(intPlayerValue >= 21){
 									con.println("Final Player Value: " + intPlayerValue);
 								}
@@ -242,6 +344,7 @@ public class CPTMarcus{
 									}
 								}
 								
+								// If user gets over 21, print to the system for the result
 								if(intPlayerValue > 21){
 									strOption = "stand";
 									System.out.println("User Busted");
@@ -270,6 +373,7 @@ public class CPTMarcus{
 									con.clear();
 									intDealerValue = 0;
 									
+									// Reprint the player cards
 									con.println("PLAYER CARDS");
 									for(intCount = 0; intCount < intPlayerCount; intCount++){
 										if(intPlayer[intCount][0] == 1){
@@ -289,6 +393,7 @@ public class CPTMarcus{
 									con.println("DEALER CARDS");
 									intAceCount = 0;
 									
+									// Print the dealer cards
 									for(intCount = 0; intCount < intDealerCount; intCount++){
 										if(intDealer[intCount][0] == 1){
 											con.println("A | " + intDealer[intCount][1]);
@@ -314,11 +419,14 @@ public class CPTMarcus{
 										}
 									}
 									
+									// Dynamic Ace Values
 									while(intDealerValue > 21 && intAceCount > 0){
 										intDealerValue = intDealerValue - 10;
 										intAceCount = intAceCount - 1;
+										System.out.println("Ace Decline Dealer");
 									}
 									
+									// Prints out the values for both the player and the dealer
 									con.println("-------");
 									con.println("Final Player Value: " + intPlayerValue);
 									if(intDealerValue > 17){
@@ -345,54 +453,68 @@ public class CPTMarcus{
 						if(blnStood == true){
 							con.sleep(3000);
 							con.clear();
+							
+							// Checks the outcome of the round
 							if(intPlayerValue > 21 && intDealerValue > 21){
 								con.println("It is a tie!");
 								con.println("You both busted!");
 								strOutcome = "tie";
-							}else if(intPlayerValue < 21 && intDealerValue > 21){
+								System.out.println("tie");
+							}else if(intPlayerValue <= 21 && intDealerValue > 21){
 								con.println("You won against the dealer!");
 								con.println("The dealer busted!");
 								con.println("Your total was: " + intPlayerValue);
 								con.println("The dealer's total was: " + intDealerValue);
 								strOutcome = "win";
-							}else if(intPlayerValue > 21 && intDealerValue < 21){
+								System.out.println("win");
+							}else if(intPlayerValue > 21 && intDealerValue <= 21){
 								con.println("You lost against the dealer");
 								con.println("You busted!");
 								con.println("Your total was: " + intPlayerValue);
 								con.println("The dealer's total was: " + intDealerValue);
 								strOutcome = "loss";
-							}else if(intPlayerValue < 21 && intDealerValue < 21){
-								if(intPlayerValue > intDealerValue && intPlayerValue != intDealerValue){
+								System.out.println("loss");
+							}else if(intPlayerValue <= 21 && intDealerValue <= 21){
+								if(intPlayerValue == 21 && intPlayer[2][0] == 0){
+									con.println("You won against the dealer!");
+									con.println("YOU GOT BLACKJACK!");
+									strOutcome = "blackjack";
+									System.out.println("Blackjack");
+								}else if(intPlayerValue > intDealerValue && intPlayerValue != intDealerValue){
 									con.println("You won against the dealer!");
 									con.println("Your total was: " + intPlayerValue);
 									con.println("The dealer's total was: " + intDealerValue);
 									strOutcome = "win";
+									System.out.println("win");
 								}else if(intDealerValue > intPlayerValue && intPlayerValue != intDealerValue){
 									con.println("You lost against the dealer");
 									con.println("Your total was: " + intPlayerValue);
 									con.println("The dealer's total was: " + intDealerValue);
 									strOutcome = "loss";
+									System.out.println("loss");
 								}else{
 									con.println("It is a tie!");
 									con.println("You both got the same total!");
 									con.println("Your totals were: " + intPlayerValue);
 									strOutcome = "tie";
+									System.out.println("tie");
 								}
 							}
 							con.print("Do you want to play again? (Y/N): ");
 							strOption = con.readLine();
 							
+							// Restarts to the beginning
 							if(strOption.equalsIgnoreCase("Y")){
 								System.out.println("User played again");
 							}else if(strOption.equalsIgnoreCase("N")){
 								con.closeConsole();
-								
 							}
 							
 						}
 					}
 					
 				}else if(chrChoice == 'v'){
+					// Creates a new file for reading
 					blnMainMenu = false;
 					con.clear();
 					TextInputFile scores = new TextInputFile("winners.txt");
@@ -401,9 +523,11 @@ public class CPTMarcus{
 						con.println(scores.readLine());
 					}
 					con.println("");
+					
 					con.println("When you want to return back to the main menu");
 					con.print("Just press the \"y\" key");
 					
+					// Returns back to the main menu when the user presses "y"
 					if(con.getChar() == 'y'){
 						blnMainMenu = true;
 						con.clear();
@@ -413,6 +537,8 @@ public class CPTMarcus{
 				}else if(chrChoice == 'h'){
 					blnMainMenu = false;
 					con.clear();
+					
+					// Prints out the rules of Blackjack
 					con.println("RULES OF BLACKJACK");
 					con.println("You try to create card totals higher than the dealer");
 					con.println("However, you cannot go higher than 21 or you bust");
@@ -431,16 +557,45 @@ public class CPTMarcus{
 					con.println("back to the main menu");
 					con.print("Just press the \"y\" key");
 					
-					
+					// Returns back to the main menu when the user presses "y"
 					while(con.getChar() != 'y'){
 						System.out.println("Help Test");
 					}
+					// Go back to the main menu once y is pressed
 					blnMainMenu = true;
 					con.clear();
 					break;
 					
+				}else if(chrChoice == 's'){
+					blnMainMenu = false;
+					con.clear();
+					
+					// Secret Menu
+					con.println("Welcome to the secret menu");
+					con.sleep(1500);
+					con.println("I'm surprised you found out about my existence");
+					con.sleep(1500);
+					con.println("Now it's time for you to hear a joke");
+					con.sleep(3000);
+					con.println("There are 10 types of people in the world");
+					con.sleep(3000);
+					con.println("Those who understand binary and those who don't");
+					con.sleep(1500);
+					
+					con.println("");
+					
+					con.println("When you want to return back to the main menu");
+					con.println("Just press the \"y\" key");
+					con.println("");
+					while(con.getChar() != 'y'){
+						System.out.println("Secret Test");
+					}
+					blnMainMenu = true;
+					con.clear();
+					break;
 				}
 			}
+			
 			if(chrChoice == 'q'){
 				con.closeConsole();
 			}
