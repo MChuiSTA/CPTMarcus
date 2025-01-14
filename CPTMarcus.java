@@ -371,6 +371,14 @@ public class CPTMarcus{
 									System.out.println("User Got 21");
 									blnStandPrint = false;
 								}
+								if(intPlayerValue <= 21 && intPlayerCount == 5){
+									con.println("You win against the dealer");
+									con.println("You got 5 cards without busting!");
+									con.println("You won: $" + intBet);
+									intMoney = intMoney + intBet;
+									con.println("You now have: $" + intMoney);
+									blnStood = true;
+								}
 							}else if(strOption.equalsIgnoreCase("stand") || strOption.equalsIgnoreCase("s") || intPlayerValue >= 21){
 								while(intDealerValue < 17 && intDealerCount <= 5){
 									// Find the next available card
@@ -531,6 +539,7 @@ public class CPTMarcus{
 									con.println("You both got the same total!");
 									con.println("Your totals were: " + intPlayerValue);
 									con.println("You didn't lose or win any money");
+									con.println("You have: $" + intMoney);
 									strOutcome = "tie";
 									System.out.println("tie");
 								}
@@ -602,14 +611,14 @@ public class CPTMarcus{
 					con.println("You try to create card totals higher than the dealer");
 					con.println("However, you cannot go higher than 21 or you bust");
 					con.println("Number Cards count as their number");
-					con.println("The Jack, Queen, and King count as 10");
+					con.println("Jacks, Queens, and Kings count as 10");
 					con.println("Aces count as 11 unless that would cause them to bust, then they count as 1");
 					con.println("You can hit: Get another card");
 					con.println("You can stand: Take no more cards");
 					con.println("You can double down: Double the bet");
-					con.println("but only take one more card");
+					con.println("but only take one more card.");
 					con.println("The dealer cannot hit");
-					con.println("if their total is 17 or more");
+					con.println("if their total is 17 or more.");
 					con.println("");
 					con.println("");
 					con.println("When you want to return");
@@ -656,7 +665,7 @@ public class CPTMarcus{
 					break;
 				}
 			}
-			if(chrChoice != 'p' && chrChoice != 'h' && chrChoice != 's' && chrChoice != 'v'){
+			if(chrChoice != 'p' && chrChoice != 'h' && chrChoice != 's' && chrChoice != 'v' && chrChoice != 'q'){
 				con.println("That's not an option");
 				con.println("Pick Again");
 				con.sleep(1000);
