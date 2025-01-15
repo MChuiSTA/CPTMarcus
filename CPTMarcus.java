@@ -388,6 +388,7 @@ public class CPTMarcus{
 									intMoney = intMoney + intBet;
 									con.println("You now have: $" + intMoney);
 									blnStood = true;
+									// Getting 5 cards without busting is called a 5 card Charlie
 									blnCharlie = true;
 								}
 							}else if(strOption.equalsIgnoreCase("stand") || strOption.equalsIgnoreCase("s") || intPlayerValue >= 21){
@@ -523,7 +524,7 @@ public class CPTMarcus{
 									con.println("You won against the dealer!");
 									con.println("YOU GOT BLACKJACK!");
 									con.println("YOU GET 3x THE MONEY!!");
-									intMoney = intMoney + (intBet * 3);
+									intMoney = intMoney + (intBet * 2);
 									con.println("You have: $" + intMoney);
 									System.out.println("Blackjack");
 								}else if(intPlayerValue > intDealerValue && intPlayerValue != intDealerValue && blnCharlie == false){
