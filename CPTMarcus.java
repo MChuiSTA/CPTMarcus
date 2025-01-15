@@ -43,6 +43,8 @@ public class CPTMarcus{
 		boolean blnStandPrint = true;
 		boolean blnMainMenu = true;
 		boolean blnDoubled = false;
+		boolean blnCharlie = false;
+		// Maybe add a play counter like intPlayCount or smth
 		
 		while(blnMainMenu == true){
 			// Main Menu
@@ -100,6 +102,8 @@ public class CPTMarcus{
 							intAceCount = 0;
 							blnStood = false;
 							blnStandPrint = true;
+							blnDoubled = false;
+							blnCharlie = false;
 						}
 						con.clear();
 					}
@@ -183,6 +187,7 @@ public class CPTMarcus{
 							intDeck[2][0] = -1;
 						}
 						if(intPlayerValue <= 11 && intPlayerValue >= 9 && intPlayer[2][0] == 0){
+							// If user doubles down, doubles the bet
 							con.print("Do you want to double down? (Y/N): ");
 							strDoubleDown = con.readLine();
 							if(strDoubleDown.equalsIgnoreCase("y") || strDoubleDown.equalsIgnoreCase("yes")){
@@ -191,6 +196,7 @@ public class CPTMarcus{
 								System.out.println("User doubled down");
 								strOption = "stand";
 							}else{
+								// Even if user misclicks, the program doesn't break and just assumes the user didn't double down
 								System.out.println("User could've doubled down");
 								blnDoubled = false;
 							}
@@ -371,13 +377,18 @@ public class CPTMarcus{
 									System.out.println("User Got 21");
 									blnStandPrint = false;
 								}
+								
+								// If the user gets 5 cards without busting
 								if(intPlayerValue <= 21 && intPlayerCount == 5){
+									con.sleep(3000);
+									con.clear();
 									con.println("You win against the dealer");
 									con.println("You got 5 cards without busting!");
 									con.println("You won: $" + intBet);
 									intMoney = intMoney + intBet;
 									con.println("You now have: $" + intMoney);
 									blnStood = true;
+									blnCharlie = true;
 								}
 							}else if(strOption.equalsIgnoreCase("stand") || strOption.equalsIgnoreCase("s") || intPlayerValue >= 21){
 								while(intDealerValue < 17 && intDealerCount <= 5){
@@ -476,8 +487,11 @@ public class CPTMarcus{
 						}
 						
 						if(blnStood == true){
-							con.sleep(3000);
-							con.clear();
+							// If user gets 5 cards without busting, so it doesn't display a different print statement
+							if(blnCharlie == false){
+								con.sleep(3000);
+								con.clear();
+							}
 							
 							// Checks the outcome of the round
 							if(intPlayerValue > 21 && intDealerValue > 21){
@@ -485,7 +499,6 @@ public class CPTMarcus{
 								con.println("You both busted!");
 								con.println("You didn't lose or win any money");
 								con.println("You have: $" + intMoney);
-								strOutcome = "tie";
 								System.out.println("tie");
 							}else if(intPlayerValue <= 21 && intDealerValue > 21){
 								con.println("You won against the dealer!");
@@ -495,7 +508,6 @@ public class CPTMarcus{
 								con.println("You won: $" + intBet);
 								intMoney = intMoney + intBet;
 								con.println("You have: $" + intMoney);
-								strOutcome = "win";
 								System.out.println("win");
 							}else if(intPlayerValue > 21 && intDealerValue <= 21){
 								con.println("You lost against the dealer");
@@ -505,7 +517,6 @@ public class CPTMarcus{
 								con.println("You lost: $" + intBet);
 								intMoney = intMoney - intBet;
 								con.println("You have: $" + intMoney);
-								strOutcome = "loss";
 								System.out.println("loss");
 							}else if(intPlayerValue <= 21 && intDealerValue <= 21){
 								if(intPlayerValue == 21 && intPlayer[2][0] == 0){
@@ -514,16 +525,14 @@ public class CPTMarcus{
 									con.println("YOU GET 3x THE MONEY!!");
 									intMoney = intMoney + (intBet * 3);
 									con.println("You have: $" + intMoney);
-									strOutcome = "blackjack";
 									System.out.println("Blackjack");
-								}else if(intPlayerValue > intDealerValue && intPlayerValue != intDealerValue){
+								}else if(intPlayerValue > intDealerValue && intPlayerValue != intDealerValue && blnCharlie == false){
 									con.println("You won against the dealer!");
 									con.println("Your total was: " + intPlayerValue);
 									con.println("The dealer's total was: " + intDealerValue);
 									con.println("You won: $" + intBet);
 									intMoney = intMoney + intBet;
 									con.println("You have: $" + intMoney);
-									strOutcome = "win";
 									System.out.println("win");
 								}else if(intDealerValue > intPlayerValue && intPlayerValue != intDealerValue){
 									con.println("You lost against the dealer");
@@ -532,30 +541,32 @@ public class CPTMarcus{
 									con.println("You lost: $" + intBet);
 									intMoney = intMoney - intBet;
 									con.println("You have: $" + intMoney);
-									strOutcome = "loss";
 									System.out.println("loss");
-								}else{
+								}else if(intPlayerValue == intDealerValue){
 									con.println("It is a tie!");
 									con.println("You both got the same total!");
 									con.println("Your totals were: " + intPlayerValue);
 									con.println("You didn't lose or win any money");
 									con.println("You have: $" + intMoney);
-									strOutcome = "tie";
 									System.out.println("tie");
 								}
 							}
+							
+							// Asks if the user wants to play again
 							con.print("Do you want to play again? (Y/N): ");
 							strOption = con.readLine();
 							
-							// Restarts to the beginning
+							// Restarts the program to the start of the while loop
 							if(strOption.equalsIgnoreCase("Y")){
 								System.out.println("User played again");
 							}else if(strOption.equalsIgnoreCase("N") && intMoney > 0){
 								con.clear();
 								con.println("You didn't lose everything!");
+								// Sends the user's name and money to the winners.txt file
 								TextOutputFile scoreInput1 = new TextOutputFile("winners.txt", true);
 								scoreInput1.println(strName + ", " + intMoney);
 								scoreInput1.close();
+								// Sends the user back to the main menu when they press the y key
 								con.println("When you want to return to the main menu");
 									con.println("Just press the \"y\" key");
 								while(con.getChar() != 'y'){
@@ -566,9 +577,12 @@ public class CPTMarcus{
 							}
 						}
 					}
+					
+				// When the user is out of money to play and tries to play again
 				}else if(intMoney <= 0 && chrChoice == 'p'){
 					con.println("You lost all of your money");
 					System.out.println("User lost everything");
+					// Sends the user 
 					TextOutputFile scoreInput2 = new TextOutputFile("winners.txt", true);
 					scoreInput2.println(strName + ", " + intMoney);
 					scoreInput2.close();
@@ -581,7 +595,7 @@ public class CPTMarcus{
 					con.clear();
 					break;
 				}else if(chrChoice == 'v'){
-					// Creates a new file for reading
+					// Read the winners.txt file and prints it to the screen
 					blnMainMenu = false;
 					con.clear();
 					TextInputFile scores = new TextInputFile("winners.txt");
@@ -609,16 +623,24 @@ public class CPTMarcus{
 					// Prints out the rules of Blackjack
 					con.println("RULES OF BLACKJACK");
 					con.println("You try to create card totals higher than the dealer");
+					con.println("");
 					con.println("However, you cannot go higher than 21 or you bust");
+					con.println("");
 					con.println("Number Cards count as their number");
+					con.println("");
 					con.println("Jacks, Queens, and Kings count as 10");
-					con.println("Aces count as 11 unless that would cause them to bust, then they count as 1");
+					con.println("");
+					con.println("Aces count as 11 unless");
+					con.println("that would cause them to bust,");
+					con.println("then they count as 1");
+					con.println("");
 					con.println("You can hit: Get another card");
 					con.println("You can stand: Take no more cards");
 					con.println("You can double down: Double the bet");
 					con.println("but only take one more card.");
-					con.println("The dealer cannot hit");
-					con.println("if their total is 17 or more.");
+					con.println("");
+					con.println("The dealer cannot hit if");
+					con.println("their total is 17 or more.");
 					con.println("");
 					con.println("");
 					con.println("When you want to return");

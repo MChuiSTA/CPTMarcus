@@ -1,27 +1,2 @@
-cassian, 100001
-cassian, 100000
-1, 1998
-1, 999
-1, 999
-1, 999
-Harold, 0
-Peter, -1200
-cassian, 0
-Moses, 0
-, -1000
-yatyin, 2000
-cassian, 0
-cassian, 0
-cyrus, 0
-cyrus, 0
-cassian, 0
-cassian, 0
-cassian, 0
-cassian, 0
-cassian, 0
-cassian, 0
-cassian, 1600000
-1, 1003
-Marcus dum dum, 0
-Justin lau, 0
-Moses, 0
+kyle, 0
+kyle, 997
