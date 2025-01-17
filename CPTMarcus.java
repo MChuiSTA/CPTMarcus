@@ -88,6 +88,7 @@ public class CPTMarcus{
 								con.println("That's not a valid amount of money");
 							}
 						}
+						// Clear out all the cards
 						for(intCount = 0; intCount < 5; intCount++){
 							// Resets all the variables for replay
 							intPlayer[intCount][0] = 0;
