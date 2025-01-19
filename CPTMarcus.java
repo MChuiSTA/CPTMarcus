@@ -603,6 +603,7 @@ public class CPTMarcus{
 					TextInputFile scores = new TextInputFile("winners.txt");
 					con.clear();
 					System.out.println("Viewing Test");
+					// Prints every line on the file
 					while(scores.eof() == false){
 						con.println(scores.readLine());
 					}
