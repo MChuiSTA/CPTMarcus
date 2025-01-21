@@ -560,28 +560,38 @@ public class CPTMarcus{
 								}
 							}
 							
-							// Asks if the user wants to play again
-							con.print("Do you want to play again? (Y/N): ");
-							strOption = con.readLine();
+							// Creates the play again variable
+							boolean blnPlayAgain = false;
 							
-							// Restarts the program to the start of the while loop
-							if(strOption.equalsIgnoreCase("Y")){
-								System.out.println("User played again");
-							}else if(strOption.equalsIgnoreCase("N") && intMoney > 0){
-								con.clear();
-								con.println("You didn't lose everything!");
-								// Sends the user's name and money to the winners.txt file
-								TextOutputFile scoreInput1 = new TextOutputFile("winners.txt", true);
-								scoreInput1.println(strName + ", " + intMoney);
-								scoreInput1.close();
-								// Sends the user back to the main menu when they press the y key
-								con.println("When you want to return to the main menu");
-									con.println("Just press the \"y\" key");
-								while(con.getChar() != 'y'){
-									System.out.println("Lose Test");
+							while(blnPlayAgain == false){
+								// Asks if the user wants to play again
+								con.print("Do you want to play again? (Y/N): ");
+								strOption = con.readLine();
+								
+								// Restarts the program to the start of the while loop
+								if(strOption.equalsIgnoreCase("Y")){
+									System.out.println("User played again");
+									blnPlayAgain = true;
+								}else if(strOption.equalsIgnoreCase("N") && intMoney > 0){
+									con.clear();
+									con.println("You didn't lose everything!");
+									// Sends the user's name and money to the winners.txt file
+									TextOutputFile scoreInput1 = new TextOutputFile("winners.txt", true);
+									scoreInput1.println(strName + ", " + intMoney);
+									scoreInput1.close();
+									// Sends the user back to the main menu when they press the y key
+									con.println("When you want to return to the main menu");
+										con.println("Just press the \"y\" key");
+									while(con.getChar() != 'y'){
+										System.out.println("Lose Test");
+									}
+									// The user doesn't really play again, it just breaks out of the while loop
+									blnPlayAgain = true;
+									blnMainMenu = true;
+									con.clear();
+								}else{
+									con.println("That's not an option");
 								}
-								blnMainMenu = true;
-								con.clear();
 							}
 						}
 					}
