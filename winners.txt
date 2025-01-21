@@ -5,3 +5,7 @@ hi, -1000
 kyle, 1999
 winners, 0
 hadriel, 6000
+hardiel, 500
+bruh, 0
+1, 0
+1, 0

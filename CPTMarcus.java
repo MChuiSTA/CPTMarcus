@@ -589,6 +589,10 @@ public class CPTMarcus{
 									blnPlayAgain = true;
 									blnMainMenu = true;
 									con.clear();
+								}else if(strOption.equalsIgnoreCase("N") && intMoney <= 0){
+									// The user doesn't really play again, it just breaks out of the while loop
+									blnPlayAgain = true;
+									blnMainMenu = true;
 								}else{
 									con.println("That's not an option");
 								}
