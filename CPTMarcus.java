@@ -1,3 +1,9 @@
+//-------------------------------------------------------------------------
+// Name:         CPTMarcus
+// Purpose:      Blackjack
+// Author:       Marcus Chui
+// Created:      Dec 19, 2024
+//-------------------------------------------------------------------------
 import arc.*;
 import java.awt.*;
 import java.awt.image.*;
@@ -82,7 +88,7 @@ public class CPTMarcus{
 						con.println("You have $" + intMoney);
 						intBet = 0;
 						while(intBet > intMoney || intBet <= 0){
-							con.print("How much do you want to bet?: ");
+							con.print("How much do you want to bet? (No $ Sign): ");
 							intBet = con.readInt();
 							if(intBet <= 0 || intBet > intMoney){
 								con.println("That's not a valid amount of money");
